@@ -1,12 +1,12 @@
 import SwiftSCAD
 
-Scoop(innerDiameter: 44, volume: 30, handleLength: 70)
-    .save(to: "scoop-30.scad")
+save {
+    Scoop(innerDiameter: 44, volume: 30, handleLength: 70)
+        .named("scoop-30ml.scad")
 
-Scoop(innerDiameter: 38, volume: 20, handleLength: 70)
-    .save(to: "scoop-20.scad")
-
-
+    Scoop(innerDiameter: 38, volume: 20, handleLength: 70)
+        .named("scoop-20ml.scad")
+}
 
 struct Scoop: Shape3D {
     let innerRadius: Double

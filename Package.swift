@@ -6,7 +6,7 @@ let package = Package(
     name: "coffee-scoop",
     platforms: [.macOS(.v14)],
     dependencies: [
-        .package(url: "https://github.com/tomasf/SwiftSCAD.git", branch: "main"),
+        .package(url: "https://github.com/tomasf/SwiftSCAD.git", from: "0.7.1"),
     ],
     targets: [
         .executableTarget(
