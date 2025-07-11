@@ -1,17 +1,17 @@
-// swift-tools-version: 5.9
-
+// swift-tools-version: 6.0
 import PackageDescription
 
 let package = Package(
     name: "coffee-scoop",
     platforms: [.macOS(.v14)],
     dependencies: [
-        .package(url: "https://github.com/tomasf/SwiftSCAD.git", from: "0.7.1"),
+        .package(url: "https://github.com/tomasf/Cadova.git", .upToNextMinor(from: "0.1.0"))
     ],
     targets: [
         .executableTarget(
             name: "coffee-scoop",
-            dependencies: ["SwiftSCAD"]
+            dependencies: ["Cadova"],
+            swiftSettings: [.interoperabilityMode(.Cxx)]
         ),
     ]
 )

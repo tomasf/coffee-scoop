@@ -1,11 +1,12 @@
-import SwiftSCAD
+import Cadova
 
-save {
-    Scoop(innerDiameter: 44, volume: 30, handleLength: 70)
-        .named("scoop-30ml.scad")
-
-    Scoop(innerDiameter: 38, volume: 20, handleLength: 70)
-        .named("scoop-20ml.scad")
+await Project {
+    await Model("scoop-30ml") {
+        Scoop(innerDiameter: 44, volume: 30, handleLength: 70)
+    }
+    await Model("scoop-20ml") {
+        Scoop(innerDiameter: 38, volume: 20, handleLength: 70)
+    }
 }
 
 struct Scoop: Shape3D {
@@ -19,7 +20,7 @@ struct Scoop: Shape3D {
         self.handleLength = handleLength
     }
 
-    var body: Geometry3D {
+    var body: any Geometry3D {
         let innerShape = Circle(radius: innerRadius)
         let coneVolume = innerShape.pyramidVolume(height: innerRadius)
         let baseVolume = targetVolume - coneVolume
@@ -46,7 +47,7 @@ struct Scoop: Shape3D {
                     [0, -baseHeight]
                 ])
             }
-            .extruded()
+            .revolved()
             .aligned(at: .bottom)
             .adding {
                 let handleShape = Rectangle(x: handleExtent, y: handleWidth)
@@ -54,7 +55,7 @@ struct Scoop: Shape3D {
                     .adding {
                         Circle(radius: outerRadius)
                     }
-                    .rounded(amount: handleWidth / 2 - 0.01)
+                    .rounded(radius: handleWidth / 2 - 0.01)
                     .subtracting {
                         Circle(radius: innerRadius)
                         Circle(diameter: handleWidth - 2 * wallThickness)
@@ -67,7 +68,7 @@ struct Scoop: Shape3D {
                     .subtracting {
                         handleShape.offset(amount: -wallThickness, style: .round)
                     }
-                    .extruded(height: baseHeight, convexity: 4)
+                    .extruded(height: baseHeight)
                     .subtracting {
                         Cylinder(radius: baseHeight - handleThickness, height: outerRadius)
                             .rotated(x: 90°)
